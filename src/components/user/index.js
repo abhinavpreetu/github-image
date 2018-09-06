@@ -1,67 +1,35 @@
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
-  name: 'HelloWorld',
-  data() {
-    return {
-      repositories: [],
-      contents: [],
-      profile: {},
-    };
+  name: 'user',
+
+  computed: {
+    ...mapGetters([
+      'repositories',
+      'contents',
+    ]),
   },
 
   methods: {
-    getProfile() {
-      fetch('https://api.github.com/users/abhinavpreetu')
-        .then(res => res.json())
-        .then(({ avatar_url: image, name, bio }) => {
-          this.profile = {
-            image,
-            name,
-            bio,
-          };
-          console.log(this.profile); //eslint-disable-line
-        })
-        .catch((err) => {
-          throw err;
-        });
+    ...mapActions([
+      'setRepoSelected',
+    ]),
+
+    repoClickHandler(repo) {
+      this.setRepoSelected(repo);
+      this.$router.push(`/contents/${repo.name}`);
     },
 
-    getRepositories() {
-      fetch('https://api.github.com/users/abhinavpreetu/repos')
-        .then(res => res.json())
-        .then((response) => {
-          this.repositories = [
-            ...response.filter(({ name, id, created_at: createdAt }) => ({ //eslint-disable-line
-              name,
-              id,
-              createdAt,
-            })),
-          ];
-        })
-        .catch((err) => {
-          throw err;
-        });
+    formatDate(data) {
+      const date = new Date(data);
+      return `${date.toString().toLowerCase() !== 'Invalid Date'.toLowerCase() ?
+        date.toLocaleString('en-US', {
+          month: 'short',
+          year: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+        }) : ''}`;
     },
-
-    getContents(name) {
-      fetch(`https://api.github.com/repos/abhinavpreetu/${name}/contents`)
-        .then(res => res.json())
-        .then((response) => {
-          this.contents = [
-            ...response,
-          ];
-          console.log(this.contents); //eslint-disable-line
-        })
-        .catch((err) => {
-          throw err;
-        });
-    },
-  },
-
-  created() {
-    this.getProfile();
-  },
-
-  mounted() {
-    this.getRepositories();
   },
 };

@@ -1,0 +1,41 @@
+@import "../variables";
+
+.repoList {
+  padding: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  box-sizing: border-box;
+
+  .repos {
+    padding: 1em 2em;
+    border-radius: 4px;
+    border: 1px solid $alto;
+    background: $white;
+    flex-basis: 48%;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:nth-child(odd) {
+      margin-right: 4%;
+    }
+
+    &:not(:last-of-type) {
+      margin-bottom: 1em;
+    }
+
+    .name {
+      color: $lightSeaGreen;
+      font-size: 1.1rem;
+    }
+
+    .description {
+      color: $alto;
+      font-size: .9rem;
+    }
+
+    .date {
+      font-size: .8rem;
+    }
+  }
+}

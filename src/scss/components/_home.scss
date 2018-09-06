@@ -1,0 +1,19 @@
+.home {
+  display: flex;
+  flex-basis: 20%;
+
+  .profile {
+    min-width: 150px;
+    max-width: 300px;
+    padding: 1em;
+
+    > img {
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .content {
+    flex-grow: 4;
+  }
+}
