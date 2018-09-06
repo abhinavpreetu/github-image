@@ -1,13 +1,18 @@
 <template>
-<div>
-  <ul v-if="isFolder">
-    <li v-for="content in contents"
+<loader v-if="showLoader" />
+<div class="content-list" v-else>
+  <div v-if="isFolder">
+    <div v-for="content in sortedContents"
       :key="content.path"
+      class="content-item"
       @click="contentClickHandler(content)">
-      {{content.name}}
-    </li>
-  </ul>
-  <pre v-else>{{getFileContent}}</pre>
+      <img
+        :src="content.type === 'file' ? fileIcon : dirIcon"
+        class="content-icon" alt="content icon">
+      <span class="name">{{content.name}}</span>
+    </div>
+  </div>
+  <pre v-else class="file-content">{{getFileContent}}</pre>
 </div>
 </template>
 
@@ -17,6 +22,6 @@ import view from './index';
 export default view;
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+@import "../../scss/components/view";
 </style>

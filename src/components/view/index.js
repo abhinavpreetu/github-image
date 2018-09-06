@@ -1,21 +1,40 @@
 import { mapGetters, mapActions } from 'vuex';
 
+import loader from '../loader';
+import fileIcon from '../../assets/file.svg';
+import dirIcon from '../../assets/folder.svg';
+
+const sortingByName = (a, b) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+};
+
 export default {
   name: 'View',
+
+  components: {
+    loader,
+  },
 
   computed: {
     ...mapGetters([
       'contents',
       'repoSelected',
+      'showLoader',
     ]),
 
-    contents: () => ([
-      'abcd',
-      'pqrs',
-      'ssdf',
-      'wefef',
-      'asdf',
-    ]),
+    sortedContents() {
+      const { contents } = this;
+      return [
+        ...contents.filter(content => content.type === 'dir').sort(sortingByName),
+        ...contents.filter(content => content.type === 'file').sort(sortingByName),
+      ];
+    },
 
     isFolder() {
       return Array.isArray(this.contents);
@@ -24,6 +43,10 @@ export default {
     getFileContent() {
       return atob(this.contents);
     },
+
+    fileIcon: () => fileIcon,
+
+    dirIcon: () => dirIcon,
   },
 
   methods: {

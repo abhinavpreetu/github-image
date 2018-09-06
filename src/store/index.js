@@ -17,6 +17,8 @@ const store = new Vuex.Store({
     repoSelected: {},
     contentSelected: {},
     repoImage: [],
+    showLoader: true,
+    userName: '',
   },
 
   getters: {
@@ -24,6 +26,8 @@ const store = new Vuex.Store({
     repositories: state => state.repositories,
     contents: state => state.contents,
     repoSelected: state => state.repoSelected,
+    showLoader: state => state.showLoader,
+    userName: state => state.userName,
   },
 
   mutations: {
@@ -61,28 +65,45 @@ const store = new Vuex.Store({
     [types.setContentOfFileSelected](state, payload) {
       state.contents = payload;
     },
+
+    [types.setShowLoader](state, payload) {
+      state.showLoader = payload;
+    },
+
+    [types.setUserName](state, payload) {
+      state.userName = payload;
+    },
   },
 
   actions: {
-    getProfile({ commit }) {
-      fetch(`${apiBaseUrl}/users/abhinavpreetu`)
+    getProfile({ commit, dispatch }, username) {
+      fetch(`${apiBaseUrl}/users/${username}`)
         .then(res => res.json())
-        .then(payload => commit(types.setProfileInfo, payload))
+        .then((payload) => {
+          commit(types.setProfileInfo, payload);
+          dispatch('getRepositories');
+        })
         .catch((err) => {
           throw err;
         });
     },
 
     getRepositories({ commit }) {
-      fetch(`${apiBaseUrl}/users/abhinavpreetu/repos`)
+      const { userName } = this.state;
+      fetch(`${apiBaseUrl}/users/${userName}/repos`)
         .then(res => res.json())
-        .then(response => commit(types.setRepositories, response))
+        .then((response) => {
+          commit(types.setShowLoader, false);
+          commit(types.setRepositories, response);
+        })
         .catch((err) => {
+          commit(types.setShowLoader, false);
           throw err;
         });
     },
 
     getContents({ commit }, { path = '' } = {}) {
+      commit(types.setShowLoader, true);
       const { name } = this.state.repoSelected;
       fetch(`${apiBaseUrl}/repos/abhinavpreetu/${name}/contents${path}`)
         .then(res => res.json())
@@ -92,8 +113,10 @@ const store = new Vuex.Store({
           } else {
             commit(types.setContentOfFileSelected, response.content);
           }
+          commit(types.setShowLoader, false);
         })
         .catch((err) => {
+          commit(types.setShowLoader, false);
           throw err;
         });
     },
@@ -105,6 +128,15 @@ const store = new Vuex.Store({
 
     setContentSelected({ commit }, payload) {
       commit(types.setContentSelected, payload);
+    },
+
+    setShowLoader({ commit }, payload) {
+      commit(types.setShowLoader, payload);
+    },
+
+    setUserName({ commit, dispatch }, payload) {
+      commit(types.setUserName, payload);
+      dispatch('getProfile', payload);
     },
   },
 });
