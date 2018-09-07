@@ -1,4 +1,4 @@
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'username',
@@ -6,6 +6,12 @@ export default {
   data: () => ({
     userName: '',
   }),
+
+  computed: {
+    ...mapGetters([
+      'userNotFound',
+    ]),
+  },
 
   methods: {
     ...mapActions([

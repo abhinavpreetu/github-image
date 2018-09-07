@@ -6,6 +6,7 @@ const setContentOfFileSelected = 'setContentOfFileSelected';
 const setContentSelected = 'setContentSelected';
 const setShowLoader = 'setShowLoader';
 const setUserName = 'setUserName';
+const setUserNotFound = 'setUserNotFound';
 
 export default {
   setProfileInfo,
@@ -16,4 +17,5 @@ export default {
   setContentSelected,
   setShowLoader,
   setUserName,
+  setUserNotFound,
 };

@@ -19,6 +19,7 @@ const store = new Vuex.Store({
     repoImage: [],
     showLoader: true,
     userName: '',
+    userNotFound: false,
   },
 
   getters: {
@@ -28,6 +29,7 @@ const store = new Vuex.Store({
     repoSelected: state => state.repoSelected,
     showLoader: state => state.showLoader,
     userName: state => state.userName,
+    userNotFound: state => state.userNotFound,
   },
 
   mutations: {
@@ -73,18 +75,25 @@ const store = new Vuex.Store({
     [types.setUserName](state, payload) {
       state.userName = payload;
     },
+
+    [types.setUserNotFound](state, payload) {
+      state.userNotFound = payload;
+    },
   },
 
   actions: {
     getProfile({ commit, dispatch }, username) {
       fetch(`${apiBaseUrl}/users/${username}`)
-        .then(res => res.json())
+        .then(res => (res.status >= 200 && res.status < 300) ? res.json() : Promise.reject(res)) //eslint-disable-line
         .then((payload) => {
           commit(types.setProfileInfo, payload);
+          commit(types.setUserNotFound, false);
           dispatch('getRepositories');
         })
         .catch((err) => {
-          throw err;
+          commit(types.setUserName, '');
+          commit(types.setUserNotFound, true);
+          console.error(err);//eslint-disable-line
         });
     },
 

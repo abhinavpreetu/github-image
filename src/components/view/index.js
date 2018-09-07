@@ -47,6 +47,9 @@ export default {
     fileIcon: () => fileIcon,
 
     dirIcon: () => dirIcon,
+
+    url: () => 'https://raw.githubusercontent.com/abhinavpreetu/devathon/master/src/App.vue',
+
   },
 
   methods: {

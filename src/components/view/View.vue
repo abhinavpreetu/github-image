@@ -12,7 +12,11 @@
       <span class="name">{{content.name}}</span>
     </div>
   </div>
-  <pre v-else class="file-content">{{getFileContent}}</pre>
+  <div v-else >
+    <p class="note">hint: right click and click on save link to download file.</p>
+    <a :href="url">download</a>
+    <pre class="file-content">{{getFileContent}}</pre>
+  </div>
 </div>
 </template>
 
