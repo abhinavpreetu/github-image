@@ -113,8 +113,9 @@ const store = new Vuex.Store({
 
     getContents({ commit }, { path = '' } = {}) {
       commit(types.setShowLoader, true);
-      const { name } = this.state.repoSelected;
-      fetch(`${apiBaseUrl}/repos/abhinavpreetu/${name}/contents${path}`)
+      const { name: repo } = this.state.repoSelected;
+      const { userName } = this.state;
+      fetch(`${apiBaseUrl}/repos/${userName}/${repo}/contents${path}`)
         .then(res => res.json())
         .then((response) => {
           if (Array.isArray(response)) {

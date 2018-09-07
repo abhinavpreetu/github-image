@@ -20,6 +20,11 @@
       margin: 0 0 1em;
     }
 
+    .error {
+      color: $red;
+      font-size: .8rem;
+    }
+
     > input {
       width: 100%;
       border: none;
@@ -51,10 +56,5 @@
         outline: 0;
       }
     }
-  }
-
-  .error {
-    color: $red;
-    font-size: .8rem;
   }
 }

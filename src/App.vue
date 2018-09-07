@@ -1,6 +1,6 @@
 <template>
   <user-input v-if="!userName" />
-  <main v-else>
+  <main v-else class="home-container">
     <loader v-if="showLoader && !repositories.length"/>
     <div id="app" class="home" v-else>
       <div class="profile" v-cloak>

@@ -48,7 +48,7 @@ export default {
   },
 
   created() {
-    if (window.location.href.indexOf('?code=') < 0) {
+    if (window.location.href.indexOf('code=') < 1) {
       window.open(`${authorize}`, '_self');
     }
   },

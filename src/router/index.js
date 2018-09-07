@@ -18,4 +18,5 @@ export default new Router({
       component: view,
     },
   ],
+  mode: 'history',
 });
